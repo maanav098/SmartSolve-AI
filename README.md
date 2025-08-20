@@ -95,4 +95,4 @@ This project is for educational/demo purposes.
 ---
 
 **Frontend entry point:** [`client/src/index.tsx`](client/src/index.tsx)  
-**Backend entry
+**Backend entry point:** [`server/server.py`](server/server.py)
