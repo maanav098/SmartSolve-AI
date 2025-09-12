@@ -17,11 +17,6 @@
     {
       "src": "/(.*)",
       "dest": "/client/$1"
-    }
+      }
   ],
-  "functions": {
-    "server/server.py": {
-      "runtime": "python3.9"
-    }
-  }
 }
