@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaArrowLeft } from "react-icons/fa6";
 import { useAuth } from "../auth/useAuth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
