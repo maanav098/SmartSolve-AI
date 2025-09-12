@@ -62,7 +62,7 @@ const LoginPage: React.FC = memo(() => {
      startProgress();
 
      try {
-       const response = await fetch("/login", {
+       const response = await fetch("https://smartsolve-ai.onrender.com/login", {
          method: "POST",
          headers: {
            "Content-Type": "application/json",
