@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
         formData.append("query", query);
 
         const response = await axios.post(
-          "http://localhost:5000/gemini",
+          "https://smartsolve-ai.onrender.com/gemini",
           formData,
           {
             headers: {
@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
         // Delete the file after use
         URL.revokeObjectURL(URL.createObjectURL(file));
       } else {
-        const response = await axios.post("http://localhost:5000/gemini", {
+  const response = await axios.post("https://smartsolve-ai.onrender.com/gemini", {
           query,
         });
         answer = response.data.result || "No content found.";
