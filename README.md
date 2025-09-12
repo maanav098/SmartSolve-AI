@@ -1,6 +1,33 @@
-# AI Gemini Web App
+# SmartSolve AI
 
-This project is a full-stack web application that provides a Gemini-powered AI assistant with multimodal capabilities (text and image input), user authentication, and a modern React-based frontend with dark mode support.
+A modern, full-stack AI-powered web application that provides intelligent chat capabilities with multimodal support (text and image input) using Google's Gemini AI. Built with React TypeScript frontend and Flask Python backend.
+
+![SmartSolve AI](https://img.shields.io/badge/AI-Powered-blue) ![React](https://img.shields.io/badge/React-TypeScript-blue) ![Flask](https://img.shields.io/badge/Flask-Python-green) ![Gemini](https://img.shields.io/badge/Google-Gemini--AI-red)
+
+## 🚀 Features
+
+- **🤖 AI Chat Interface**: Interactive chat with Google Gemini AI
+- **📁 Multimodal Support**: Upload and analyze images with text queries
+- **🌙 Dark/Light Mode**: Toggle between themes for better user experience
+- **📱 Responsive Design**: Works seamlessly on desktop and mobile devices
+- **🔐 Authentication**: Simple login system with demo credentials
+- **⚡ Real-time Loading**: Beautiful loading animations and progress indicators
+- **🎨 Modern UI**: Professional glassmorphism design with smooth animations
+
+## 🛠️ Tech Stack
+
+### Frontend
+- **React 18** with TypeScript
+- **Material-UI** for components
+- **React Router** for navigation
+- **Axios** for API calls
+- **NProgress** for loading indicators
+
+### Backend
+- **Flask** (Python web framework)
+- **Google Generative AI** (Gemini API)
+- **Python-dotenv** for environment management
+- **Flask-CORS** for cross-origin requests
 
 ## Project Structure
 
@@ -8,79 +35,77 @@ This project is a full-stack web application that provides a Gemini-powered AI a
 - `server/` - Flask backend (Python)
 - `.env` - Environment variables (API keys, etc.)
 
-## Features
+## 📋 Prerequisites
 
-- **Login Page**: Simple authentication (demo credentials: `123@gmail.com` / `123`)
-- **Home Page**: Chat with Gemini AI, send text or images, view chat history
-- **Dark Mode**: Toggle between light and dark themes
-- **Random Fact**: Displays a random fact using [api-ninjas.com](https://api-ninjas.com/api/facts)
-- **Loading Animation**: Custom hamster wheel loader
-- **Responsive Design**: Works on desktop and mobile
+- Node.js (v16 or higher)
+- Python (v3.8 or higher)
+- Google Gemini API Key
 
-## Getting Started
+## ⚙️ Installation & Setup
 
-### Prerequisites
-
-- Node.js & npm
-- Python 3.x
-- [Google Generative AI Python SDK](https://github.com/google/generative-ai-python)
-- [Flask](https://flask.palletsprojects.com/)
-- [python-dotenv](https://pypi.org/project/python-dotenv/)
-- [axios](https://axios-http.com/)
-
-### Setup
-
-#### 1. Clone the repository
-
-```sh
-git clone <your-repo-url>
-cd project-root
+### 1. Clone the Repository
+```bash
+git clone https://github.com/maanav098/SmartSolve-AI.git
+cd SmartSolve-AI
 ```
 
-#### 2. Install backend dependencies
-
-```sh
+### 2. Backend Setup
+```bash
 cd server
-pip install flask python-dotenv google-generativeai
+pip install -r requirements.txt
 ```
 
-#### 3. Install frontend dependencies
-
-```sh
+### 3. Frontend Setup
+```bash
 cd ../client
 npm install
 ```
 
-#### 4. Set up environment variables
-
-Edit `.env` and add your Gemini API key:
-
-```
-GEMINI_API_KEY="your-gemini-api-key"
+### 4. Environment Configuration
+Create a `.env` file in the root directory:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-#### 5. Run the backend
+**How to get Gemini API Key:**
+1. Visit [Google AI Studio](https://aistudio.google.com/)
+2. Sign in with your Google account
+3. Create a new API key
+4. Copy and paste it in your `.env` file
 
-```sh
-cd ../server
+## 🚀 Running the Application
+
+### Start Backend Server
+```bash
+cd server
 python server.py
 ```
+Backend will run on `http://localhost:5000`
 
-#### 6. Run the frontend
-
-```sh
-cd ../client
+### Start Frontend
+```bash
+cd client
 npm start
 ```
+Frontend will run on `http://localhost:3000`
 
-The frontend will be available at [http://localhost:3000](http://localhost:3000) and will proxy API requests to the backend at [http://localhost:5000](http://localhost:5000).
+## 👤 Demo Credentials
+
+
+**Email**: `123@gmail.com`
+**Password**: `123`
+
+> Use these credentials to log in. After login, you can use the Logout button (top right in homepage) to securely exit, or the Back button to return to the previous page. The homepage header is designed to match the login page's futuristic glassmorphism style for a seamless user experience.
+
 
 ## Usage
 
-- **Login**: Use the demo credentials or modify authentication logic in [`server/server.py`](server/server.py).
+
+- **Login**: Use the demo credentials above. The login page and homepage both feature a modern, glassmorphic header and responsive design.
+- **Logout/Back**: Use the Logout button in the homepage header to securely log out, or Back to return to the previous page.
 - **Chat**: Enter a query or upload an image to interact with Gemini AI.
-- **Dark Mode**: Toggle using the bat icon.
-- **Random Fact**: Displayed on the login page sidebar.
+- **Dark/Futuristic Mode**: Toggle using the bat icon for a Futuristic look.
+- **Responsive UI**: The site is fully responsive and user-friendly on all devices.
 
 ## Customization
 

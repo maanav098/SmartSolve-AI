@@ -1,12 +1,7 @@
-import { ReactTyped } from "react-typed";
-
 const Header = () => {
   return (
     <div>
-      <h1>
-        {" "}
-        <ReactTyped strings={["This is a testing website..."]} typeSpeed={250} loop />
-      </h1>
+      <h1 style={{margin: 0}}>Smartsolve AI</h1>
     </div>
   );
 };

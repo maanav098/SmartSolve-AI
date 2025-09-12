@@ -1,3 +1,27 @@
-.dropdown-label{
-    font-size: large
+.dropdown-label {
+    font-size: 16px;
+    color: #fff;
+    opacity: .9;
+}
+
+.features-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 8px 0 10px 0;
+}
+
+.feature-pill {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 12px;
+}
+
+.project-blurb {
+    color: #fff;
+    opacity: .9;
+    margin: 4px 0 0 0;
 }

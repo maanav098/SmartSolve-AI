@@ -3,10 +3,11 @@ import React from 'react'
 function Low() {
   return (
     <div>
-        <h4>About Us</h4>
+        <h4>About this Project</h4>
         <p>
-          We are a company dedicated to providing the best service possible. Our
-          mission is to bring quality and excellence to our customers.
+          A modern, full-stack AI-powered web application that provides intelligent chat capabilities 
+          with multimodal support (text and image input) using Google's Large Language Model (Gemini AI). Built with React 
+          TypeScript frontend and Flask Python backend. This project is a part of my learning journey and I hope you enjoy it.
         </p>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface DarkModeContextProps {
   darkMode: boolean;
@@ -17,6 +17,16 @@ export const DarkModeProvider: React.FC<{ children: ReactNode }> = ({
   const toggleDarkMode = () => {
     setDarkMode((prevMode) => !prevMode);
   };
+
+  // Apply a class to body to enable Futuristic Mode theming
+  useEffect(() => {
+    const cls = "futuristic-mode";
+    if (darkMode) {
+      document.body.classList.add(cls);
+    } else {
+      document.body.classList.remove(cls);
+    }
+  }, [darkMode]);
 
   return (
     <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>

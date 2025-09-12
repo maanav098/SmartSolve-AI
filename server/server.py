@@ -18,7 +18,7 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 # Initialize the Gemini model
-model = genai.GenerativeModel('gemini-1.5-pro-latest')
+model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 # Handle CORS for development
 @app.after_request
@@ -96,9 +96,11 @@ def gemini_search():
             # Generate content using Gemini model
             response = model.generate_content(query)
             generated_text = response.text
-            
             return jsonify({"result": generated_text}), 200
-
+    except Exception as rate_error:
+        if "429" in str(rate_error) or "quota" in str(rate_error).lower():
+            return jsonify({"error": "Rate limit exceeded. Please try again later."}), 429
+        raise rate_error
     except Exception as e:
         error_message = f"Error generating content: {str(e)}"
         print(error_message)
@@ -107,4 +109,4 @@ def gemini_search():
 
 # Run the Flask app
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
