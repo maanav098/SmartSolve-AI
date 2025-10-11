@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LoginPage from "../login_page/loginpage";
 import HomePage from "../homepage/homepage";
+import OAuthCallback from "../auth/OAuthCallback";
 import { AuthProvider } from "../auth/useAuth";
 import ProtectedRoute from "./protected_route";
 import { DarkModeProvider,useDarkMode } from "../Darkmode/darkmodecontext";
@@ -33,6 +34,7 @@ const Reactrouter: React.FC = () => {
           <AuthProvider>
             <Routes>
               <Route path="/" element={<LoginPage />} />
+              <Route path="/auth/callback" element={<OAuthCallback />} />
               <Route element={<ProtectedRoute />}>
                 <Route path="/home" element={<HomePage />} />
               </Route>

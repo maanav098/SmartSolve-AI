@@ -669,4 +669,113 @@ button:active {
 .copyright a { color: #60a5fa; text-decoration: none; }
 .copyright a:hover { color: #93c5fd; text-decoration: underline; }
 
+/* Login divider */
+.login-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 25px 0 15px 0;
+  color: var(--font-color-sub);
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.login-divider span {
+  padding: 0 15px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dark-mode .login-divider::before,
+.dark-mode .login-divider::after {
+  border-bottom-color: rgba(148, 163, 184, 0.3);
+}
+
+/* Google login button with text */
+.google-login {
+  width: 100%;
+  height: 52px;
+  padding: 0 20px;
+  border-radius: 12px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid rgba(66, 133, 244, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(66, 133, 244, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.google-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(66, 133, 244, 0.25);
+  border-color: rgba(66, 133, 244, 0.4);
+  background: rgba(255, 255, 255, 1);
+}
+
+.google-login span {
+  font-size: 15px;
+  font-weight: 600;
+  color: #3c4043;
+}
+
+.dark-mode .google-login {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(66, 133, 244, 0.3);
+}
+
+.dark-mode .google-login span {
+  color: #e2e8f0;
+}
+
+.dark-mode .google-login:hover {
+  background: rgba(30, 41, 59, 1);
+}
+
+/* Test credentials */
+.test-credentials {
+  margin-top: 25px;
+  padding: 15px;
+  background: rgba(254, 243, 199, 0.9);
+  border-radius: 10px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  text-align: center;
+}
+
+.test-credentials p {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: #92400e;
+  font-size: 14px;
+}
+
+.test-credentials small {
+  color: #78350f;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  font-weight: 500;
+}
+
+.dark-mode .test-credentials {
+  background: rgba(30, 27, 75, 0.9);
+  border-color: rgba(147, 197, 253, 0.3);
+}
+
+.dark-mode .test-credentials p {
+  color: #bfdbfe;
+}
+
+.dark-mode .test-credentials small {
+  color: #93c5fd;
+}
+
+
 

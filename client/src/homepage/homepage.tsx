@@ -7,11 +7,12 @@ import Error from "./error";
 import "./homepage.css"
 import { ReactComponent as ImagesIcon } from "../assets/icons/camera-svgrepo-com.svg";
 import { ReactComponent as VoiceIcon } from "../assets/icons/microphone-svgrepo-com.svg";
+import NagarroLogo from "../assets/icons/512px-Nagarro_logo_new.svg.png";
 import Load from "./loading/loading";
 import { Grid } from "@mui/material";
 
 const HomePage: React.FC = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
   const [query, setQuery] = useState<string>("");
   const [result, setResult] = useState<string>("");
@@ -137,12 +138,30 @@ const HomePage: React.FC = () => {
         boxShadow: "0 8px 32px rgba(34,211,238,0.08)",
         borderRadius: "0 0 24px 24px"
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <img src="/logo192.png" alt="Smartsolve AI Logo" style={{ width: 40, height: 40, marginRight: 10 }} />
-          <span style={{ fontFamily: 'Orbitron, Inter, sans-serif', fontWeight: 700, fontSize: 28, letterSpacing: 1, background: "linear-gradient(90deg,#22d3ee,#a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Smartsolve AI</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <img src={NagarroLogo} alt="Nagarro Logo" style={{ width: 140, height: 36, objectFit: "contain" }} />
+          <div style={{ 
+            height: 28, 
+            width: 2, 
+            background: "linear-gradient(180deg,#47D7AC,#13294B)", 
+            marginLeft: 8, 
+            marginRight: 8,
+            borderRadius: 1
+          }} />
+          <span style={{ 
+            fontFamily: 'Orbitron, Inter, sans-serif', 
+            fontWeight: 700, 
+            fontSize: 24, 
+            letterSpacing: 1, 
+            background: "linear-gradient(90deg,#22d3ee,#a78bfa)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent" 
+          }}>
+            SmartSolve AI
+          </span>
         </div>
         <div style={{ display: "flex", gap: 10 }}>
-          <button title="Logout" onClick={() => { logout(); navigate("/"); }} style={{
+          <button title="Logout" onClick={async () => { await logout(); navigate("/"); }} style={{
             display: "flex", alignItems: "center", gap: 6,
             padding: "10px 18px", borderRadius: 10, border: "none",
             background: "linear-gradient(90deg,#a78bfa,#22d3ee)", color: "white",

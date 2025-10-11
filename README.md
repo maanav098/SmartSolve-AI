@@ -1,6 +1,10 @@
-# SmartSolve AI
+# SmartSolve AI 🚀
 
-A modern, full-stack AI-powered web application that provides intelligent chat capabilities with multimodal support (text and image input) using Google's Gemini AI. Built with React TypeScript frontend and Flask Python backend.
+**AI-Powered Chat Application with Simplified Authentication**
+
+Built for Nagarro Internship Project - Nagarro Internship Project
+
+A modern, full-stack AI-powered web application developed as part of a Nagarro internship program. The application provides intelligent chat capabilities with multimodal support (text and image input) using Google's Gemini AI. Built with React TypeScript frontend and Flask Python backend.
 
 ![SmartSolve AI](https://img.shields.io/badge/AI-Powered-blue) ![React](https://img.shields.io/badge/React-TypeScript-blue) ![Flask](https://img.shields.io/badge/Flask-Python-green) ![Gemini](https://img.shields.io/badge/Google-Gemini--AI-red)
 

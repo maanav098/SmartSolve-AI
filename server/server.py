@@ -1,26 +1,45 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, redirect
 import google.generativeai as genai
 import os
 import tempfile
 from dotenv import load_dotenv
 import shutil
+import requests
+from datetime import datetime, timedelta
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
 # Load environment variables from .env file
 load_dotenv('../.env')
 
 app = Flask(__name__)
 
-# Configure the GenAI API with the key from environment variables
+# Simple configuration
+app.config['SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'nagarro-smartsolve-ai-secret-2025')
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY', 'nagarro-smartsolve-ai-secret-2025')
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)  # 24 hour tokens
+
+# Initialize JWT
+jwt = JWTManager(app)
+
+# Google OAuth Configuration
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+
+# Frontend URL (for OAuth redirects)
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+
+# Configure the GenAI API
 api_key = os.environ.get("GEMINI_API_KEY")
 if not api_key:
     raise ValueError("Missing GEMINI_API_KEY environment variable")
 
 genai.configure(api_key=api_key)
-
-# Initialize the Gemini model
 model = genai.GenerativeModel('gemini-2.5-flash')
 
-# Handle CORS for development
+# Simple user storage (in production, use a database)
+authenticated_users = set()
+
+# Handle CORS manually for simplicity
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -33,22 +52,140 @@ def after_request(response):
 def index():
     return render_template("index.html")
 
-# Route to handle login functionality
+# Simple test login (email: test@nagarro.com, password: test123)
 @app.route("/login", methods=["POST"])
 def login():
-    data = request.get_json()
-    email = data.get("email")
-    password = data.get("password")
+    try:
+        data = request.get_json()
+        email = data.get("email", "").strip().lower()
+        password = data.get("password", "")
 
-    # Example authentication logic
-    if email == "123@gmail.com" and password == "123":
-        return jsonify({"message": "Login successful!"}), 200
-    else:
-        return jsonify({"message": "Invalid email or password"}), 401
+        # Test credentials
+        if email == "test@nagarro.com" and password == "test123":
+            # Add to authenticated users
+            authenticated_users.add(email)
+            
+            # Generate JWT token
+            access_token = create_access_token(
+                identity=email,
+                additional_claims={"name": "Test User", "provider": "test"}
+            )
+            
+            return jsonify({
+                "message": "Login successful",
+                "access_token": access_token,
+                "user": {
+                    "email": email,
+                    "name": "Test User",
+                    "provider": "test"
+                }
+            }), 200
+        else:
+            return jsonify({"error": "Invalid credentials. Use test@nagarro.com / test123"}), 401
 
-# Route to handle Gemini API search
+    except Exception as e:
+        return jsonify({"error": "Login failed"}), 500
+
+# Google OAuth 2.0 Authorization
+@app.route("/auth/google", methods=["GET"])
+def google_auth():
+    if not GOOGLE_CLIENT_ID:
+        return jsonify({"error": "Google OAuth not configured"}), 500
+    
+    google_auth_url = (
+        f"https://accounts.google.com/o/oauth2/auth?"
+        f"client_id={GOOGLE_CLIENT_ID}&"
+        f"redirect_uri=https://smartsolve-ai.onrender.com/auth/google/callback&"
+        f"scope=openid email profile&"
+        f"response_type=code&"
+        f"access_type=offline"
+    )
+    
+    return jsonify({"auth_url": google_auth_url}), 200
+
+# Google OAuth 2.0 Callback
+@app.route("/auth/google/callback")
+def google_callback():
+    try:
+        code = request.args.get('code')
+        if not code:
+            return "Authorization failed", 400
+
+        # Exchange code for tokens
+        token_url = "https://oauth2.googleapis.com/token"
+        token_data = {
+            'client_id': GOOGLE_CLIENT_ID,
+            'client_secret': GOOGLE_CLIENT_SECRET,
+            'code': code,
+            'grant_type': 'authorization_code',
+            'redirect_uri': 'https://smartsolve-ai.onrender.com/auth/google/callback'
+        }
+
+        token_response = requests.post(token_url, data=token_data)
+        if token_response.status_code != 200:
+            return "Failed to obtain access token", 400
+
+        tokens = token_response.json()
+        access_token = tokens.get('access_token')
+
+        # Get user information
+        user_info_url = f"https://www.googleapis.com/oauth2/v2/userinfo?access_token={access_token}"
+        user_response = requests.get(user_info_url)
+        if user_response.status_code != 200:
+            return "Failed to get user information", 400
+
+        user_data = user_response.json()
+        email = user_data.get('email', '').lower()
+        name = user_data.get('name', '')
+
+        # Add to authenticated users
+        authenticated_users.add(email)
+
+        # Generate JWT token
+        jwt_access_token = create_access_token(
+            identity=email,
+            additional_claims={"name": name, "provider": "google"}
+        )
+
+        # Redirect to frontend with token
+        redirect_url = f"{FRONTEND_URL}/auth/callback?token={jwt_access_token}"
+        return redirect(redirect_url)
+
+    except Exception as e:
+        return f"OAuth callback failed: {str(e)}", 500
+
+# User profile endpoint
+@app.route("/auth/profile", methods=["GET"])
+@jwt_required()
+def profile():
+    current_user = get_jwt_identity()
+    if current_user not in authenticated_users:
+        return jsonify({"error": "User not found"}), 404
+
+    return jsonify({
+        "user": {
+            "email": current_user,
+            "name": "User",  # You can enhance this
+            "provider": "authenticated"
+        }
+    }), 200
+
+# Logout endpoint
+@app.route("/auth/logout", methods=["POST"])
+@jwt_required()
+def logout():
+    current_user = get_jwt_identity()
+    authenticated_users.discard(current_user)
+    return jsonify({"message": "Successfully logged out"}), 200
+
+# Route to handle Gemini API search - Protected endpoint
 @app.route("/gemini", methods=["POST"])
+@jwt_required()
 def gemini_search():
+    # Verify user is authenticated
+    current_user = get_jwt_identity()
+    if current_user not in authenticated_users:
+        return jsonify({"error": "User not authenticated"}), 401
     try:
         temp_dir = None
         
