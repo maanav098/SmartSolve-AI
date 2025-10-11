@@ -39,6 +39,7 @@ const HomePage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    console.log("Starting request with query:", query);
 
     try {
       let answer = "";
@@ -57,6 +58,7 @@ const HomePage: React.FC = () => {
             },
           }
         );
+        console.log("File upload response:", response);
         answer = response.data.result || "No content found.";
         addToChatHistory(query, answer, URL.createObjectURL(file));
         setFile(null);
@@ -64,9 +66,10 @@ const HomePage: React.FC = () => {
         // Delete the file after use
         URL.revokeObjectURL(URL.createObjectURL(file));
       } else {
-  const response = await axios.post("https://smartsolve-ai.onrender.com/gemini", {
+        const response = await axios.post("https://smartsolve-ai.onrender.com/gemini", {
           query,
         });
+        console.log("Text query response:", response);
         answer = response.data.result || "No content found.";
         addToChatHistory(query, answer);
       }
@@ -74,8 +77,23 @@ const HomePage: React.FC = () => {
       setResult(answer);
       setError("");
     } catch (err: any) {
-      console.error(err);
-      setError(err.response?.data?.error || "Unknown error occurred.");
+      console.error("Full error object:", err);
+      console.error("Error response:", err.response);
+      console.error("Error message:", err.message);
+      
+      let errorMessage = "Unknown error occurred.";
+      if (err.response) {
+        // Server responded with error status
+        errorMessage = err.response.data?.error || `Server error: ${err.response.status} ${err.response.statusText}`;
+      } else if (err.request) {
+        // Request was made but no response received
+        errorMessage = "Network error: Unable to reach the server. Please check your internet connection.";
+      } else {
+        // Something else happened
+        errorMessage = err.message || "An unexpected error occurred.";
+      }
+      
+      setError(errorMessage);
       setResult("");
     } finally {
       setLoading(false);
