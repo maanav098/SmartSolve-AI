@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import shutil
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv('../.env')
 
 app = Flask(__name__)
 
@@ -18,7 +18,7 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 # Initialize the Gemini model
-model = genai.GenerativeModel('gemini-1.5-flash-latest')
+model = genai.GenerativeModel('gemini-2.5-flash')
 
 # Handle CORS for development
 @app.after_request
